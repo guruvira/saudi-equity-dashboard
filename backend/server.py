@@ -383,10 +383,10 @@ async def get_analysis_history():
     return {"analyses": analyses}
 
 @api_router.get("/analysis/{analysis_id}/export-excel")
-async def export_excel(analysis_id: str, user: User = Depends(get_current_user)):
+async def export_excel(analysis_id: str):
     
     # Get analysis from history
-    analysis_doc = await db.analyses.find_one({"id": analysis_id, "user_id": user.id}, {"_id": 0})
+    analysis_doc = await db.analyses.find_one({"id": analysis_id}, {"_id": 0})
     if not analysis_doc:
         raise HTTPException(status_code=404, detail="Analysis not found")
     
