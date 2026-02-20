@@ -571,9 +571,7 @@ async def seed_data():
     
     return {"message": f"Seeded {len(companies_data)} companies successfully"}
 
-# Include router
-app.include_router(api_router)
-
+# Add CORS middleware BEFORE including routes
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -581,6 +579,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add root health check
+@app.get("/")
+async def root():
+    return {"status": "healthy", "service": "Saudi Equity Nexus API"}
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+# Include router
+app.include_router(api_router)
 
 logging.basicConfig(
     level=logging.INFO,
