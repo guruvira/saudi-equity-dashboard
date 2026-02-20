@@ -236,8 +236,7 @@ async def login(credentials: UserLogin):
     return Token(access_token=access_token, token_type="bearer", user=user)
 
 @api_router.get("/auth/profile", response_model=User)
-async def get_profile(authorization: str = Depends(lambda: None)):
-    user = await get_current_user(authorization)
+async def get_profile(user: User = Depends(get_current_user)):
     return user
 
 @api_router.get("/sectors")
