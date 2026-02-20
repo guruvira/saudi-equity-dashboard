@@ -362,8 +362,7 @@ async def calculate_analysis(input_data: AnalysisInput, user: User = Depends(get
     return result
 
 @api_router.post("/analysis/save")
-async def save_analysis(data: AnalysisSave, authorization: str = Depends(lambda: None)):
-    user = await get_current_user(authorization)
+async def save_analysis(data: AnalysisSave, user: User = Depends(get_current_user)):
     
     analysis_doc = data.analysis.copy()
     analysis_doc['user_id'] = user.id
