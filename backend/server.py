@@ -373,8 +373,7 @@ async def save_analysis(data: AnalysisSave, user: User = Depends(get_current_use
     return {"message": "Analysis saved successfully", "id": analysis_doc.get('id')}
 
 @api_router.get("/analysis/history")
-async def get_analysis_history(authorization: str = Depends(lambda: None)):
-    user = await get_current_user(authorization)
+async def get_analysis_history(user: User = Depends(get_current_user)):
     
     analyses = await db.analyses.find(
         {"user_id": user.id},
