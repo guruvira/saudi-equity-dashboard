@@ -362,10 +362,10 @@ async def calculate_analysis(input_data: AnalysisInput):
     return result
 
 @api_router.post("/analysis/save")
-async def save_analysis(data: AnalysisSave, user: User = Depends(get_current_user)):
+async def save_analysis(data: AnalysisSave):
     
     analysis_doc = data.analysis.copy()
-    analysis_doc['user_id'] = user.id
+    analysis_doc['user_id'] = "anonymous"
     analysis_doc['created_at'] = datetime.now(timezone.utc).isoformat()
     
     await db.analyses.insert_one(analysis_doc)
@@ -373,10 +373,10 @@ async def save_analysis(data: AnalysisSave, user: User = Depends(get_current_use
     return {"message": "Analysis saved successfully", "id": analysis_doc.get('id')}
 
 @api_router.get("/analysis/history")
-async def get_analysis_history(user: User = Depends(get_current_user)):
+async def get_analysis_history():
     
     analyses = await db.analyses.find(
-        {"user_id": user.id},
+        {},
         {"_id": 0}
     ).sort("created_at", -1).to_list(100)
     
