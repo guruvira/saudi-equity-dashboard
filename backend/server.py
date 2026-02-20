@@ -383,8 +383,7 @@ async def get_analysis_history(user: User = Depends(get_current_user)):
     return {"analyses": analyses}
 
 @api_router.get("/analysis/{analysis_id}/export-excel")
-async def export_excel(analysis_id: str, authorization: str = Depends(lambda: None)):
-    user = await get_current_user(authorization)
+async def export_excel(analysis_id: str, user: User = Depends(get_current_user)):
     
     # Get analysis from history
     analysis_doc = await db.analyses.find_one({"id": analysis_id, "user_id": user.id}, {"_id": 0})
