@@ -122,7 +122,7 @@ def verify_token(token: str):
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-async def get_current_user(authorization: str = Depends(lambda: None)):
+async def get_current_user(authorization: str = Header(None)):
     if not authorization:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
