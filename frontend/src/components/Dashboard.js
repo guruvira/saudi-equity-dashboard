@@ -30,6 +30,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     fetchSectors();
+    checkApiHealth();
   }, []);
 
   useEffect(() => {
