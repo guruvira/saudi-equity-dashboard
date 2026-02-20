@@ -26,6 +26,7 @@ export const Dashboard = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [analysisHistory, setAnalysisHistory] = useState([]);
+  const [apiStatus, setApiStatus] = useState('checking');
 
   useEffect(() => {
     fetchSectors();
