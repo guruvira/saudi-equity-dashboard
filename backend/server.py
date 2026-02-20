@@ -261,7 +261,7 @@ async def get_company(company_id: str):
     return company
 
 @api_router.post("/analysis/calculate", response_model=AnalysisResult)
-async def calculate_analysis(input_data: AnalysisInput, user: User = Depends(get_current_user)):
+async def calculate_analysis(input_data: AnalysisInput):
     
     # Get company data
     company_doc = await db.companies.find_one({"id": input_data.company_id}, {"_id": 0})
