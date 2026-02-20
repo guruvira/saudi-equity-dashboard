@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 
 class SaudiEquityAPITester:
-    def __init__(self, base_url="https://4fe2b8c0-bb2a-4d21-8ddc-cb97113d6dd6.preview.emergentagent.com"):
+    def __init__(self, base_url="http://localhost:8001"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None
