@@ -467,15 +467,16 @@ async def seed_data():
     if existing_companies > 0:
         return {"message": "Data already seeded"}
     
-    # Seed companies based on Excel data
+    # Seed companies based on major Saudi sectors with realistic data
     companies_data = [
+        # ENERGY SECTOR - Top 5
         {
             "id": str(uuid.uuid4()),
             "name": "Saudi Aramco",
             "sector": "Energy",
-            "beta": 0.922487,
-            "market_cap": 6191.0,
-            "current_price": 23.5,
+            "beta": 0.92,
+            "market_cap": 7500.0,  # Billions SAR
+            "current_price": 28.5,
             "dividend_yield": 0.045,
             "dividend_growth": 0.03,
             "earnings_growth": 0.085,
@@ -485,8 +486,8 @@ async def seed_data():
             "id": str(uuid.uuid4()),
             "name": "SABIC",
             "sector": "Energy",
-            "beta": 0.970935,
-            "market_cap": 170.25,
+            "beta": 0.97,
+            "market_cap": 320.0,
             "current_price": 95.0,
             "dividend_yield": 0.038,
             "dividend_growth": 0.025,
@@ -495,10 +496,10 @@ async def seed_data():
         },
         {
             "id": str(uuid.uuid4()),
-            "name": "Saudi Kayan",
+            "name": "Saudi Kayan Petrochemical",
             "sector": "Energy",
-            "beta": 0.954651,
-            "market_cap": 8.4,
+            "beta": 0.95,
+            "market_cap": 15.5,
             "current_price": 16.5,
             "dividend_yield": 0.042,
             "dividend_growth": 0.028,
@@ -507,10 +508,10 @@ async def seed_data():
         },
         {
             "id": str(uuid.uuid4()),
-            "name": "Yansab",
+            "name": "Yansab (Yanbu National Petrochemical)",
             "sector": "Energy",
-            "beta": 0.935885,
-            "market_cap": 15.3,
+            "beta": 0.94,
+            "market_cap": 28.0,
             "current_price": 54.0,
             "dividend_yield": 0.040,
             "dividend_growth": 0.027,
@@ -519,31 +520,83 @@ async def seed_data():
         },
         {
             "id": str(uuid.uuid4()),
-            "name": "Advanced Petrochemical",
+            "name": "Advanced Petrochemical Company",
             "sector": "Energy",
-            "beta": 0.92826,
-            "market_cap": 6.614,
+            "beta": 0.93,
+            "market_cap": 12.8,
             "current_price": 58.0,
             "dividend_yield": 0.048,
             "dividend_growth": 0.032,
             "earnings_growth": 0.078,
             "exit_multiple": 9.0
         },
+        
+        # BANKING SECTOR - Top 5
         {
             "id": str(uuid.uuid4()),
             "name": "Al Rajhi Bank",
-            "sector": "Financial Services",
+            "sector": "Banking",
             "beta": 0.88,
-            "market_cap": 340.0,
+            "market_cap": 450.0,
             "current_price": 85.0,
             "dividend_yield": 0.035,
-            "dividend_growth": 0.04,
+            "dividend_growth": 0.040,
             "earnings_growth": 0.095,
             "exit_multiple": 13.0
         },
         {
             "id": str(uuid.uuid4()),
-            "name": "Saudi Telecom (STC)",
+            "name": "Saudi National Bank (SNB)",
+            "sector": "Banking",
+            "beta": 0.90,
+            "market_cap": 380.0,
+            "current_price": 42.5,
+            "dividend_yield": 0.038,
+            "dividend_growth": 0.035,
+            "earnings_growth": 0.088,
+            "exit_multiple": 12.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Riyad Bank",
+            "sector": "Banking",
+            "beta": 0.89,
+            "market_cap": 180.0,
+            "current_price": 38.0,
+            "dividend_yield": 0.042,
+            "dividend_growth": 0.032,
+            "earnings_growth": 0.082,
+            "exit_multiple": 11.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Alinma Bank",
+            "sector": "Banking",
+            "beta": 0.91,
+            "market_cap": 85.0,
+            "current_price": 32.0,
+            "dividend_yield": 0.036,
+            "dividend_growth": 0.038,
+            "earnings_growth": 0.092,
+            "exit_multiple": 12.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Bank AlBilad",
+            "sector": "Banking",
+            "beta": 0.92,
+            "market_cap": 42.0,
+            "current_price": 48.0,
+            "dividend_yield": 0.034,
+            "dividend_growth": 0.036,
+            "earnings_growth": 0.086,
+            "exit_multiple": 11.0
+        },
+        
+        # TELECOMMUNICATIONS SECTOR - Top 5
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Saudi Telecom Company (STC)",
             "sector": "Telecommunications",
             "beta": 0.75,
             "market_cap": 280.0,
@@ -555,21 +608,181 @@ async def seed_data():
         },
         {
             "id": str(uuid.uuid4()),
+            "name": "Etihad Etisalat (Mobily)",
+            "sector": "Telecommunications",
+            "beta": 0.82,
+            "market_cap": 28.0,
+            "current_price": 22.5,
+            "dividend_yield": 0.032,
+            "dividend_growth": 0.025,
+            "earnings_growth": 0.062,
+            "exit_multiple": 9.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Zain KSA",
+            "sector": "Telecommunications",
+            "beta": 0.85,
+            "market_cap": 18.5,
+            "current_price": 14.8,
+            "dividend_yield": 0.028,
+            "dividend_growth": 0.030,
+            "earnings_growth": 0.068,
+            "exit_multiple": 9.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Arabian Internet and Communications Services (solutions by stc)",
+            "sector": "Telecommunications",
+            "beta": 0.78,
+            "market_cap": 12.0,
+            "current_price": 85.0,
+            "dividend_yield": 0.025,
+            "dividend_growth": 0.042,
+            "earnings_growth": 0.095,
+            "exit_multiple": 12.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Atheeb Telecommunication",
+            "sector": "Telecommunications",
+            "beta": 0.88,
+            "market_cap": 5.2,
+            "current_price": 26.0,
+            "dividend_yield": 0.022,
+            "dividend_growth": 0.035,
+            "earnings_growth": 0.075,
+            "exit_multiple": 8.5
+        },
+        
+        # REAL ESTATE SECTOR - Top 5
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Jabal Omar Development",
+            "sector": "Real Estate",
+            "beta": 1.05,
+            "market_cap": 38.0,
+            "current_price": 28.5,
+            "dividend_yield": 0.025,
+            "dividend_growth": 0.045,
+            "earnings_growth": 0.11,
+            "exit_multiple": 14.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Emaar The Economic City",
+            "sector": "Real Estate",
+            "beta": 1.08,
+            "market_cap": 15.0,
+            "current_price": 12.2,
+            "dividend_yield": 0.020,
+            "dividend_growth": 0.050,
+            "earnings_growth": 0.125,
+            "exit_multiple": 15.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Dar Al Arkan Real Estate",
+            "sector": "Real Estate",
+            "beta": 1.12,
+            "market_cap": 24.0,
+            "current_price": 16.8,
+            "dividend_yield": 0.028,
+            "dividend_growth": 0.048,
+            "earnings_growth": 0.115,
+            "exit_multiple": 13.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Retal Urban Development",
+            "sector": "Real Estate",
+            "beta": 1.06,
+            "market_cap": 8.5,
+            "current_price": 42.5,
+            "dividend_yield": 0.030,
+            "dividend_growth": 0.042,
+            "earnings_growth": 0.105,
+            "exit_multiple": 12.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Makkah Construction & Development",
+            "sector": "Real Estate",
+            "beta": 1.10,
+            "market_cap": 6.8,
+            "current_price": 35.0,
+            "dividend_yield": 0.026,
+            "dividend_growth": 0.046,
+            "earnings_growth": 0.108,
+            "exit_multiple": 13.0
+        },
+        
+        # UTILITIES SECTOR - Top 5
+        {
+            "id": str(uuid.uuid4()),
             "name": "ACWA Power",
             "sector": "Utilities",
-            "beta": 1.05,
-            "market_cap": 95.0,
+            "beta": 0.95,
+            "market_cap": 145.0,
             "current_price": 320.0,
             "dividend_yield": 0.028,
             "dividend_growth": 0.045,
             "earnings_growth": 0.12,
             "exit_multiple": 15.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Saudi Electricity Company",
+            "sector": "Utilities",
+            "beta": 0.72,
+            "market_cap": 165.0,
+            "current_price": 24.5,
+            "dividend_yield": 0.048,
+            "dividend_growth": 0.025,
+            "earnings_growth": 0.058,
+            "exit_multiple": 10.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "National Water Company (NWC)",
+            "sector": "Utilities",
+            "beta": 0.68,
+            "market_cap": 42.0,
+            "current_price": 18.0,
+            "dividend_yield": 0.038,
+            "dividend_growth": 0.032,
+            "earnings_growth": 0.072,
+            "exit_multiple": 11.0
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Tabreed (National Central Cooling)",
+            "sector": "Utilities",
+            "beta": 0.78,
+            "market_cap": 8.5,
+            "current_price": 42.0,
+            "dividend_yield": 0.042,
+            "dividend_growth": 0.038,
+            "earnings_growth": 0.085,
+            "exit_multiple": 11.5
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Marafiq Power",
+            "sector": "Utilities",
+            "beta": 0.82,
+            "market_cap": 12.0,
+            "current_price": 28.0,
+            "dividend_yield": 0.045,
+            "dividend_growth": 0.035,
+            "earnings_growth": 0.078,
+            "exit_multiple": 10.8
         }
     ]
     
     await db.companies.insert_many(companies_data)
     
-    return {"message": f"Seeded {len(companies_data)} companies successfully"}
+    return {"message": f"Seeded {len(companies_data)} companies across 5 sectors successfully"}
 
 # Add CORS middleware BEFORE including routes
 app.add_middleware(
