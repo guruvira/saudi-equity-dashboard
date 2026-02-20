@@ -275,9 +275,25 @@ export const Dashboard = () => {
             <div>
               <h1 className="text-4xl font-bold gradient-text mb-1">Saudi Equity Nexus</h1>
               <p className="text-slate-400">Professional Investment Analysis Platform</p>
+              <p className="text-xs text-slate-500 mt-1">
+                API: {BACKEND_URL} 
+                <span className={`ml-2 ${apiStatus === 'connected' ? 'text-emerald-400' : apiStatus === 'disconnected' ? 'text-red-400' : 'text-amber-400'}`}>
+                  {apiStatus === 'connected' ? '● Connected' : apiStatus === 'disconnected' ? '● Disconnected' : '● Checking...'}
+                </span>
+              </p>
             </div>
           </div>
           <div className="flex gap-3">
+            {apiStatus === 'disconnected' && (
+              <Button
+                onClick={() => { checkApiHealth(); fetchSectors(); }}
+                variant="outline"
+                className="border-red-400 text-red-400 hover:bg-red-400/10"
+                data-testid="retry-button"
+              >
+                Retry Connection
+              </Button>
+            )}
             <Button
               onClick={fetchHistory}
               data-testid="history-button"
