@@ -39,10 +39,21 @@ export const Dashboard = () => {
 
   const fetchSectors = async () => {
     try {
+      console.log('Fetching sectors from:', `${API}/sectors`);
       const response = await axios.get(`${API}/sectors`);
+      console.log('Sectors response:', response.data);
       setSectors(response.data.sectors);
+      if (response.data.sectors.length > 0) {
+        toast.success(`Loaded ${response.data.sectors.length} sectors`);
+      }
     } catch (error) {
-      toast.error('Failed to load sectors');
+      console.error('Error fetching sectors:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      toast.error(`Failed to load sectors: ${error.message}`);
     }
   };
 
