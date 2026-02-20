@@ -340,7 +340,7 @@ async def calculate_analysis(input_data: AnalysisInput):
     analysis_id = str(uuid.uuid4())
     result = AnalysisResult(
         id=analysis_id,
-        user_id=user.id,
+        user_id="anonymous",
         company=company,
         investment_usd=input_data.investment_usd,
         investment_sar=investment_sar,
