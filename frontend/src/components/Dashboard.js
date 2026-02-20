@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -8,14 +7,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Slider } from './ui/slider';
 import { toast } from 'sonner';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { TrendingUp, DollarSign, Calendar, Award, AlertCircle, Download, Save, History, LogOut } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { TrendingUp, DollarSign, Calendar, Award, AlertCircle, Download, Save, History, Building2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 export const Dashboard = () => {
-  const { user, logout, token, API } = useAuth();
   const [sectors, setSectors] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [selectedSector, setSelectedSector] = useState('');
@@ -29,7 +29,6 @@ export const Dashboard = () => {
 
   useEffect(() => {
     fetchSectors();
-    seedDataIfNeeded();
   }, []);
 
   useEffect(() => {
@@ -37,16 +36,6 @@ export const Dashboard = () => {
       fetchCompanies(selectedSector);
     }
   }, [selectedSector]);
-
-  const seedDataIfNeeded = async () => {
-    try {
-      await axios.post(`${API}/seed-data`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-    } catch (error) {
-      console.log('Seed data check:', error.response?.data?.message);
-    }
-  };
 
   const fetchSectors = async () => {
     try {
@@ -81,9 +70,6 @@ export const Dashboard = () => {
           investment_usd: investmentUSD,
           exit_year: exitYear[0],
           company_id: selectedCompany
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
         }
       );
       setAnalysisResult(response.data);
@@ -101,12 +87,9 @@ export const Dashboard = () => {
     try {
       await axios.post(
         `${API}/analysis/save`,
-        { analysis: analysisResult },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+        { analysis: analysisResult }
       );
-      toast.success('Analysis saved to your profile!');
+      toast.success('Analysis saved!');
     } catch (error) {
       toast.error('Failed to save analysis');
     }
@@ -114,9 +97,7 @@ export const Dashboard = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(`${API}/analysis/history`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(`${API}/analysis/history`);
       setAnalysisHistory(response.data.analyses);
       setShowHistory(true);
     } catch (error) {
@@ -153,7 +134,6 @@ export const Dashboard = () => {
       const response = await axios.get(
         `${API}/analysis/${analysisResult.id}/export-excel`,
         {
-          headers: { Authorization: `Bearer ${token}` },
           responseType: 'blob'
         }
       );
@@ -264,9 +244,14 @@ export const Dashboard = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold gradient-text mb-2">Saudi Equity Nexus</h1>
-            <p className="text-slate-400">Welcome, {user?.name}</p>
+          <div className="flex items-center gap-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 gold-glow">
+              <Building2 className="w-8 h-8 text-slate-950" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold gradient-text mb-1">Saudi Equity Nexus</h1>
+              <p className="text-slate-400">Professional Investment Analysis Platform</p>
+            </div>
           </div>
           <div className="flex gap-3">
             <Button
@@ -277,15 +262,6 @@ export const Dashboard = () => {
             >
               <History className="w-4 h-4 mr-2" />
               History
-            </Button>
-            <Button
-              onClick={logout}
-              data-testid="logout-button"
-              variant="outline"
-              className="border-red-400 text-red-400 hover:bg-red-400/10"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
             </Button>
           </div>
         </div>
@@ -601,8 +577,7 @@ export const Dashboard = () => {
                   with an IRR of <span className="text-amber-400 font-mono font-bold">{(analysisResult.irr * 100).toFixed(2)}%</span>.
                   After accounting for capital gains and dividend taxes, your after-tax return is projected at{' '}
                   <span className="text-purple-400 font-mono font-bold">{analysisResult.after_tax_return.toFixed(2)}%</span>.
-                  This <span className={analysisResult.cap_classification === 'Large Cap' ? 'text-emerald-400' : 'text-amber-400'}>large-cap</span> company
-                  is classified as <span className={`font-semibold ${
+                  This company is classified as <span className={`font-semibold ${
                     analysisResult.risk_indicator === 'Low Risk' ? 'text-emerald-400' :
                     analysisResult.risk_indicator === 'Medium Risk' ? 'text-amber-400' : 'text-red-400'
                   }`}>{analysisResult.risk_indicator}</span> based on its beta coefficient.

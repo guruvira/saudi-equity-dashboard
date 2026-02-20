@@ -1,82 +1,39 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { AuthPage } from './components/AuthPage';
+import React, { useEffect } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { Toaster } from './components/ui/sonner';
+import axios from 'axios';
 import './App.css';
 
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#020617] to-[#0f172a] flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-amber-400 border-r-transparent mb-4"></div>
-          <p className="text-slate-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  return user ? children : <Navigate to="/auth" replace />;
-};
-
-const PublicRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#020617] to-[#0f172a] flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-amber-400 border-r-transparent mb-4"></div>
-          <p className="text-slate-400">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  return user ? <Navigate to="/dashboard" replace /> : children;
-};
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 function App() {
+  useEffect(() => {
+    // Seed data on app load
+    const seedData = async () => {
+      try {
+        await axios.post(`${API}/seed-data`);
+      } catch (error) {
+        console.log('Data already seeded or error:', error.message);
+      }
+    };
+    seedData();
+  }, []);
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="App">
-          <Routes>
-            <Route
-              path="/auth"
-              element={
-                <PublicRoute>
-                  <AuthPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: '#1e293b',
-                color: '#f8fafc',
-                border: '1px solid rgba(212, 175, 55, 0.3)'
-              }
-            }}
-          />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+    <div className="App">
+      <Dashboard />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#1e293b',
+            color: '#f8fafc',
+            border: '1px solid rgba(212, 175, 55, 0.3)'
+          }
+        }}
+      />
+    </div>
   );
 }
 
