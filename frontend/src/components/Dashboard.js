@@ -39,6 +39,17 @@ export const Dashboard = () => {
     }
   }, [selectedSector]);
 
+  const checkApiHealth = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/health`);
+      setApiStatus('connected');
+      console.log('API health check passed:', response.data);
+    } catch (error) {
+      setApiStatus('disconnected');
+      console.error('API health check failed:', error.message);
+    }
+  };
+
   const fetchSectors = async () => {
     try {
       console.log('Fetching sectors from:', `${API}/sectors`);
